@@ -4,56 +4,50 @@ import csv_bouwen.functies as deft
 import pandas as pd
 import os
 import re
-import pathlib
+from pathlib import Path
+from source.paden import pad_tmp, pad_vdps, pad_file_in
 
-
-
-pad = "/Users/mike/PycharmProjects/TC_mjth_2019/" # this  should be wd path and then one up
-padtmp = "/Users/mike/PycharmProjects/TC_mjth_2019/file_out/tmp"
-padvdps = "/Users/mike/PycharmProjects/TC_mjth_2019/file_out/vdps"
+pad = Path("/Users/mike/PycharmProjects/TC_mjth_2019/")  # this  should be wd path and then one up
+# padtmp = "/Users/mike/PycharmProjects/TC_mjth_2019/file_out/tmp"
+# padvdps = "/Users/mike/PycharmProjects/TC_mjth_2019/file_out/vdps"
 # print(os.getcwd())
 # print(pad)
-paden = [padtmp,padvdps]
+paden = [pad_tmp, pad_vdps]
 
 for pad_opruim in paden:
     deft.cleaner(pad_opruim)
 
-
-name_file_in =  "202002606_inschiet.csv"    #input("csv file: ")
-ordernummer = "202002606"                           #input("ordernumber: ")
-aantal_banen =int(input("aantal_banen: >")) # if else struktuur
-mes = 3
-aantal_vdp = 2
+name_file_in = "202009810 15 18 20_inschiet.csv"  # input("csv file: ")
+ordernummer = "202009810 15 18 20_inschiet"  # input("ordernumber: ")
+aantal_banen = aantal_per_lijst = int(input("aantal_banen: >"))  # if else struktuur
+mes = 10
+aantal_vdp = 1
 mes_controle = mes * aantal_vdp
 
-
-file_in = pd.read_csv(f'{pad}file_in/{name_file_in}', delimiter=";") # try except
+file_in = pd.read_csv(pad_file_in / name_file_in, delimiter=";")  # try except
 
 totaal = file_in.aantal.sum()
 min_waarde = file_in.aantal.min()
 afwijking = 0
-
 row = len(file_in)
 opb = ongeveer_per_baan = (totaal // aantal_banen)
 
 print(f'aantal rollen= {row}')
 
-
 print(f'totaal van lijst is {totaal} en het gemiddelde over {aantal_banen} banen is {opb}')
 print(f'kleinste rol {min_waarde}')
 
-deft.splitter(file_in, aantal_banen,0)
+deft.splitter(file_in, aantal_banen, -1500)
 
-split_csv = [x for x in os.listdir(f'{pad}file_out/tmp') if x.endswith(".csv")]
+split_csv = [x for x in os.listdir(pad_tmp) if x.endswith(".csv")]
 print(f'split_csv {split_csv}')
 
 lijst_lengte = len(split_csv)
-aantal_per_lijst = 3
 
 use = lijst_lengte // aantal_per_lijst
 print(use)
 
-deft.check_map_op_mes(mes_controle, lijst_lengte, min_waarde,file_in, aantal_banen, afwijking)
+# deft.check_map_op_mes(mes_controle, lijst_lengte, min_waarde,file_in, aantal_banen, afwijking)
 # hier moet programma gaan rekenen totdat er precies genoeg tmpfiles aangemaakt worden.
 
 regex = r"([.])"
@@ -62,16 +56,16 @@ links = []
 
 count = 0
 for line in split_csv:
-    file_Naam_In = f"{pad}file_out/tmp/{line}"
-
+    file_Naam_In = f'{pad_tmp / line}'
+    print(file_Naam_In)
     a = "".join(line.strip("\n"))
     result = re.sub(regex, subst, a, 0, re.MULTILINE)
     links.append(f'{result}_')
 
     # file_Naam_In = f"{naam}_inschiet.csv"
-    filenaam_uit = f"{pad}file_out/vdps/vdp{count}_bewerkt.csv"
-    # print(file_Naam_In)
-    # print(filenaam_uit)
+    filenaam_uit = f"{pad_vdps}/vdp{count:>{0}{5}}_bewerkt.csv"
+    print(file_Naam_In)
+    print(filenaam_uit)
     count += 1
 
     trespa_lijst = pd.read_csv(file_Naam_In, ",", encoding="utf-8")
@@ -114,8 +108,27 @@ for line in split_csv:
 
 os.remove("lijst_in.csv")
 
+csv_files_in_tmp = [x for x in os.listdir(pad_tmp) if x.endswith(".csv")]  # pathlib versie of genereerde posix
+sorted_files = sorted(csv_files_in_tmp)
+print(f'sortedfiles {sorted_files}')
+aantal_rollen = len(sorted_files)
+combinaties = aantal_rollen // mes
 
+combinatie_binnen_mes = []
 
-if mes == 3:
-    print("3")
+print(combinaties)
 
+begin = 0
+eind = mes
+
+for combinatie in range(combinaties):
+    combinatie_binnen_mes.append(sorted_files[begin:eind])
+    begin += mes
+    eind += mes
+
+print(combinatie_binnen_mes)
+
+print(len(combinatie_binnen_mes) * mes)
+
+if mes == 10:
+    print("gekozen mes == 10")

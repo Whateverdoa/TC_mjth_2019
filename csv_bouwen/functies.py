@@ -4,15 +4,16 @@ import os
 from source.paden import pad_tmp, pad_vdps, pad_file_in
 
 
+Y_WAARDE = Y_waarde = 12 #import from GUI Front
+INLOOP = inloop = (Y_waarde * 10) -Y_waarde
 
-
-
-def check_map_op_mes(mes_controle, maplengte, min_waarde_rol, file_in, aantal_banen, afwijkings_waarde=0):
+def check_map_op_mes(
+    mes_controle, maplengte, min_waarde_rol, file_in, aantal_banen, afwijkings_waarde=0
+):
     # for loop of while true loop
     if mes_controle == maplengte:
         print("ok")
         print(afwijkings_waarde)
-
 
     elif mes_controle < maplengte:
         print("te veel")
@@ -27,12 +28,6 @@ def check_map_op_mes(mes_controle, maplengte, min_waarde_rol, file_in, aantal_ba
         print(afwijkings_waarde)
         # mappen opschonen
         # nieuwe waardes toepassen in splitter()
-
-
-
-
-
-
 
 
 def cleaner(pad):
@@ -66,14 +61,14 @@ def splitter(file_in, aantal_banen, afwijkings_waarde):
 
             csv_naam = f"{pad}/{a:>{0}{5}}.csv"
             print(csv_naam)
-            file_in.iloc[a: (num + 1)].to_csv(csv_naam)
+            file_in.iloc[a : (num + 1)].to_csv(csv_naam)
             print("splitter klaar")
 
         elif b >= opb + afwijkings_waarde:
 
             csv_naam = f"{pad}/{a:>{0}{5}}.csv"
             print(csv_naam)
-            file_in.iloc[a: (num + 1)].to_csv(csv_naam)
+            file_in.iloc[a : (num + 1)].to_csv(csv_naam)
 
             begin_eind_lijst.append([b, a, num])
             be_LIJST.append([a, num + 1])
@@ -113,9 +108,7 @@ def wikkel_1_baan_tc(input_vdp_lijst):
             readline = target.readlines()
 
         with open(f"VDP_map/def_{file_naam}", "w", encoding="utf-8") as target:
-            target.writelines(
-                "id;omschrijving_1;pdf_1;omschrijving_2;pdf_2\n"
-            )
+            target.writelines("id;omschrijving_1;pdf_1;omschrijving_2;pdf_2\n")
             # regel staat zo omdat ik kolomnaam id nog niet erin krijg
 
             target.writelines(readline[1:5])
@@ -161,9 +154,7 @@ def wikkel_2_baans_tc(input_vdp_lijst):
             readline = target.readlines()
 
         with open(f"VDP_map/def_{file_naam}", "w", encoding="utf-8") as target:
-            target.writelines(
-                "id;omschrijving_1;pdf_1;omschrijving_2;pdf_2\n"
-            )
+            target.writelines("id;omschrijving_1;pdf_1;omschrijving_2;pdf_2\n")
             # regel staat zo omdat ik kolomnaam id nog niet erin krijg
 
             target.writelines(readline[1:5])
@@ -502,11 +493,11 @@ def read_out_7(lissst, ordernum):
 
         file_7 = pd.read_csv(f"vdps/{g}", ";")
 
-        samengevoeg_6 = pd.concat(
+        samengevoeg_7 = pd.concat(
             [file_1, file_2, file_3, file_4, file_5, file_6, file_7], axis=1
         )
 
-        samengevoeg_6.columns = [
+        samengevoeg_7.columns = [
             "omschrijving_1",
             "pdf_1",
             "omschrijving_2",
@@ -523,7 +514,7 @@ def read_out_7(lissst, ordernum):
             "pdf_7",
         ]
 
-        samengevoeg_6.fillna(
+        samengevoeg_7.fillna(
             {
                 "pdf_1": "stans.pdf",
                 "pdf_2": "stans.pdf",
@@ -536,7 +527,7 @@ def read_out_7(lissst, ordernum):
             inplace=True,
         )
 
-        samengevoeg_6.to_csv(f"VDP_map/{ordernum}_{color_1}.csv", ";")
+        samengevoeg_7.to_csv(f"VDP_map/{ordernum}_{color_1}.csv", ";")
 
 
 def wikkel_7_baans_tc(input_vdp_lijst):
@@ -569,6 +560,129 @@ def wikkel_7_baans_tc(input_vdp_lijst):
             )  # uitloop
 
             target.writelines(readline[1:10])
+
+
+def read_out_10(lissst, ordernum):
+    """builds  and concats 7 files over axis 1"""
+    for index in range((len(lissst))):
+        print(index)
+        a = lissst[index][0]
+        b = lissst[index][1]
+        c = lissst[index][2]
+        d = lissst[index][3]
+        e = lissst[index][4]
+        f = lissst[index][5]
+        g = lissst[index][6]
+        h = lissst[index][7]
+        i = lissst[index][8]
+        j = lissst[index][9]
+
+        color_1 = f"VDP_{index + 1}"
+        # color_2 = f"{index}b"
+
+        file_1 = pd.read_csv(f"vdps/{a}", ";")
+        file_2 = pd.read_csv(f"vdps/{b}", ";")
+
+        file_3 = pd.read_csv(f"vdps/{c}", ";")
+        file_4 = pd.read_csv(f"vdps/{d}", ";")
+
+        file_5 = pd.read_csv(f"vdps/{e}", ";")
+        file_6 = pd.read_csv(f"vdps/{f}", ";")
+
+        file_7 = pd.read_csv(f"vdps/{g}", ";")
+        file_8 = pd.read_csv(f"vdps/{h}", ";")
+
+        file_9 = pd.read_csv(f"vdps/{i}", ";")
+        file_10 = pd.read_csv(f"vdps/{j}", ";")
+
+        samengevoeg_10 = pd.concat(
+            [
+                file_1,
+                file_2,
+                file_3,
+                file_4,
+                file_5,
+                file_6,
+                file_7,
+                file_8,
+                file_9,
+                file_10,
+            ],
+            axis=1,
+        )
+
+        samengevoeg_10.columns = [
+            "omschrijving_1",
+            "pdf_1",
+            "omschrijving_2",
+            "pdf_2",
+            "omschrijving_3",
+            "pdf_3",
+            "omschrijving_4",
+            "pdf_4",
+            "omschrijving_5",
+            "pdf_5",
+            "omschrijving_6",
+            "pdf_6",
+            "omschrijving_7",
+            "pdf_7",
+            "omschrijving_8",
+            "pdf_8",
+            "omschrijving_9",
+            "pdf_9",
+            "omschrijving_10",
+            "pdf_10",
+        ]
+
+        samengevoeg_10.fillna(
+            {
+                "pdf_1": "stans.pdf",
+                "pdf_2": "stans.pdf",
+                "pdf_3": "stans.pdf",
+                "pdf_4": "stans.pdf",
+                "pdf_5": "stans.pdf",
+                "pdf_6": "stans.pdf",
+                "pdf_7": "stans.pdf",
+                "pdf_8": "stans.pdf",
+                "pdf_9": "stans.pdf",
+                "pdf_10": "stans.pdf",
+            },
+            inplace=True,
+        )
+
+        samengevoeg_10.to_csv(f"VDP_map/{ordernum}_{color_1}.csv", ";")
+
+
+def wikkel_10_baans_tc(input_vdp_lijst, Y_waarde, inloop):
+    """last step voor VDP adding in en uitloop"""
+
+    for index in range(len(input_vdp_lijst)):
+        file_naam = f"{input_vdp_lijst[index]}"
+
+        with open(f"VDP_map/{file_naam}", "r", encoding="utf-8") as target:
+            readline = target.readlines()
+
+        with open(f"VDP_map/def_{file_naam}", "w", encoding="utf-8") as target:
+            target.writelines(
+                "id;omschrijving_1;pdf_1;omschrijving_2;pdf_2;omschrijving_3;pdf_3;omschrijving_4;pdf_4;omschrijving_5;pdf_5;omschrijving_6;pdf_6;omschrijving_7;pdf_7;omschrijving_8;pdf_8;omschrijving_9;pdf_9;omschrijving_10;pdf_10\n"
+            )
+            # regel staat zo omdat ik kolomnaam id nog niet erin krijg
+
+            target.writelines(readline[1:Y_WAARDE])
+
+            target.writelines(
+                "0;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf\n"
+                * inloop
+            )  # inloop
+
+            target.writelines(readline[1:])  # bestand
+
+            target.writelines(
+                "0;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf;;stans.pdf\n"
+                * inloop
+            )  # uitloop
+
+            target.writelines(readline[-Y_WAARDE:]) # check of dit laatste uit file is
 
 
 def test():

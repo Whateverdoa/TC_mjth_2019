@@ -2,7 +2,7 @@ import pandas as pd
 import csv_bouwen.functies as deft
 import os
 from pathlib import Path
-from source.paden import pad_tmp,pad_vdps,pad_file_in
+from source.paden import pad_tmp, pad_vdps, pad_file_in
 
 # pad = Path("/Users/mike/PycharmProjects/TC_mjth_2019/")  # this  should be wd path and then one up
 # padtmp = Path("/Users/mike/PycharmProjects/TC_mjth_2019/file_out/tmp")
@@ -15,8 +15,8 @@ print(paden)
 for pad_opruim in paden:
     deft.cleaner(pad_opruim)
 
-name_file_in = "202002600_inschiet.csv"  # input("csv file: ")
-ordernummer = "202002600"  # input("ordernumber: ")
+name_file_in = "202009810 15 18 20_inschiet.csv"  # input("csv file: ")
+ordernummer = "202009810"  # input("ordernumber: ")
 mes = int(input("mes: >"))  # if else struktuur
 aantal_vdp = int(input("aantal_vdp's: >"))  # if else struktuur
 aantal_banen = mes * aantal_vdp
@@ -34,7 +34,7 @@ print(gemiddelde_baan)
 # gemiddelde_baan = int(round(gemiddelde_baan,-1))
 
 # opb = gemiddelde_baan
-afwijking = 0
+afwijking = -1500
 
 
 def afwijking_berekenen(opb, afwijking):
@@ -75,7 +75,7 @@ def afwijking_berekenen(opb, afwijking):
 
         continue
 
-    be_LIJST=[]
+    be_LIJST = []
     print(begin_eind_lijst_som)
 
     sum(begin_eind_lijst_som)
@@ -98,7 +98,7 @@ def afwijking_berekenen(opb, afwijking):
 afwijking_berekenen(gemiddelde_baan, afwijking)
 
 test = []
-for stap in range(-100,100,25):
+for stap in range(afwijking, -1400, 25):
     print(stap)
 
     test.append(afwijking_berekenen(gemiddelde_baan, stap))
@@ -117,9 +117,3 @@ print(s)
 #
 #
 # print(set(de))
-
-
-
-
-
-

@@ -12,8 +12,14 @@ pad_vdps = wdir / padvdps
 pad_file_in = wdir / padfilein
 
 print(pad_tmp)
-a=pad_tmp / "__>boven.csv"
-print(a.is_file())
+
+
 print(pad_vdps)
 print(pad_file_in)
+
+pad_tmp.mkdir(parents=True, exist_ok=True)
+pad_vdps.mkdir(parents=True, exist_ok=True)
+
+
+
 
