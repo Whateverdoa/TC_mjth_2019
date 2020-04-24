@@ -1,6 +1,7 @@
 """before I try classes in this script I will put all the functions here"""
 import pandas as pd
 import os
+from pathlib import Path
 from source.paden import pad_tmp, pad_vdps, pad_file_in
 
 
@@ -59,14 +60,14 @@ def splitter(file_in, aantal_banen, afwijkings_waarde):
             begin_eind_lijst.append([c, a, num + 1])
             be_LIJST.append([a, num + 1])
 
-            csv_naam = f"{pad}/{a:>{0}{5}}.csv"
+            csv_naam = Path(f"{pad}/{a:>{0}{5}}.csv")
             print(csv_naam)
             file_in.iloc[a : (num + 1)].to_csv(csv_naam)
             print("splitter klaar")
 
         elif b >= opb + afwijkings_waarde:
 
-            csv_naam = f"{pad}/{a:>{0}{5}}.csv"
+            csv_naam = Path(f"{pad}/{a:>{0}{5}}.csv")
             print(csv_naam)
             file_in.iloc[a : (num + 1)].to_csv(csv_naam)
 
@@ -76,6 +77,8 @@ def splitter(file_in, aantal_banen, afwijkings_waarde):
             a = num + 1
 
         continue
+
+    return begin_eind_lijst, be_LIJST
 
 
 def print_trespa_rolls(colorcode, beeld, aantal, filenaam_uit):
@@ -273,7 +276,7 @@ def read_out_4(lissst, ordernum):
         samengevoeg_4.to_csv(f"VDP_map/{ordernum}_{color_1}.csv", ";")
 
 
-def wikkel_4_baans_tc(input_vdp_lijst):
+def wikkel_4_baans_tc(input_vdp_lijst, data_uit_vdp=5):
     """last step voor VDP adding in en uitloop"""
 
     for index in range(len(input_vdp_lijst)):
@@ -687,3 +690,118 @@ def wikkel_10_baans_tc(input_vdp_lijst, Y_waarde, inloop):
 
 def test():
     print("testing")
+
+def kol_naam_lijst_builder(mes_waarde=1):
+    kollomnaamlijst = []
+
+    for count in range(1, mes_waarde + 1):
+        # 5 = len (list) of mes
+        num = f"kolom_{count}"
+        omschrijving = f"omschrijving_{count}"
+        pdf = f"pdf_{count}"
+        kollomnaamlijst.append(num)
+        kollomnaamlijst.append(pdf)
+        kollomnaamlijst.append(omschrijving)
+
+    # return ["id"] + kollomnaamlijst
+    return kollomnaamlijst
+
+
+def lees_per_lijst(lijst_met_posix_paden, mes_waarde):
+    """1 lijst in len(lijst) namen uit
+    input lijst met posix paden"""
+    count = 1
+    concatlist = []
+    for posix_pad_naar_file in lijst_met_posix_paden:
+        # print(posix_pad_naar_file)
+        naam = f'file{count:>{0}{4}}'
+        # print(naam)
+        naam = pd.read_csv(posix_pad_naar_file)
+        concatlist.append(naam)
+        count += 1
+    kolomnamen = kol_naam_lijst_builder(mes_waarde)
+    lijst_over_axis_1 = pd.concat(concatlist, axis=1)
+    lijst_over_axis_1.columns = [kolomnamen]
+
+    # return lijst_over_axis_1.to_csv("test2.csv", index=0)
+    return lijst_over_axis_1
+
+
+def horizontaal_samenvoegen(opgebroken_posix_lijst, map_uit, meswaarde):
+    count = 1
+    for lijst_met_posix in opgebroken_posix_lijst:
+        vdp_hor_stap = f'vdp_hor_stap_{count:>{0}{4}}.csv'
+        vdp_hor_stap = map_uit/ vdp_hor_stap
+        # print(vdp_hor_stap)
+        df = lees_per_lijst(lijst_met_posix, meswaarde)
+        # print(df.tail(5))
+
+        lees_per_lijst(lijst_met_posix, meswaarde).to_csv(vdp_hor_stap, index=0)
+
+        count += 1
+    return print("hor")
+
+
+def stapel_df_baan(naam,lijstin, ordernummer, map_uit):
+    stapel_df = []
+    for lijst_naam in lijstin:
+        # print(lijst_naam)
+        to_append_df = pd.read_csv(
+            f"{lijst_naam}", ",", dtype="str", index_col=0)
+        stapel_df.append(to_append_df)
+    pd.concat(stapel_df, axis=0).to_csv(f"{map_uit}/{naam}_{ordernummer}.csv", ",")
+    return pd.DataFrame(stapel_df)
+
+def kolom_naam_gever_num_pdf_omschrijving(mes=1):
+    """supplies a specific string  met de oplopende kolom namen num_1, pdf_1, omschrijving_1 etc"""
+
+    def list_to_string(functie):
+        kolom_namen = ""
+        for kolomnamen in functie:
+            kolom_namen += kolomnamen + ","
+        return kolom_namen[:-1] + "\n"
+
+    kollomnaamlijst = []
+
+    for count in range(1, mes + 1):
+        # 5 = len (list) of mes
+        num = f"num_{count}"
+        omschrijving = f"omschrijving_{count}"
+        pdf = f"pdf_{count}"
+        kollomnaamlijst.append(num)
+        kollomnaamlijst.append(pdf)
+        kollomnaamlijst.append(omschrijving)
+
+    namen = list_to_string(kollomnaamlijst)
+
+    return namen
+
+
+
+
+def wikkel_n_baans_tc(input_vdp_posix_lijst, etiketten_Y, in_loop, mes):
+    """last step voor VDP adding in en uitloop"""
+
+    inlooplijst = (".,stans.pdf,," * mes)
+    inlooplijst = inlooplijst[:-1] + "\n" # -1 removes empty column in final file
+
+    for file_naam in input_vdp_posix_lijst:
+        with open(f"{file_naam}", "r", encoding="utf-8") as target:
+            readline = target.readlines()
+
+        nieuwe_vdp_naam = VDP_Def / file_naam.name
+        with open(nieuwe_vdp_naam, "w", encoding="utf-8") as target:
+            target.writelines(kolom_naam_gever_num_pdf_omschrijving(mes))
+
+            target.writelines(readline[1:etiketten_Y + 1])
+            # target.writelines(readline[16:(etikettenY+etikettenY-8)])
+
+            target.writelines(
+                (inlooplijst) * in_loop)  # inloop
+            print("inloop maken")
+            target.writelines(readline[1:])  # bestand
+
+            target.writelines(
+                (inlooplijst) * in_loop)  # inloop  # uitloop
+            print("uitloop maken")
+            target.writelines(readline[-etiketten_Y:])

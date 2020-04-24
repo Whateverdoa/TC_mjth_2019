@@ -1,11 +1,14 @@
 """ alleen de code"""
 
-import csv_bouwen.functies as deft
+
 import pandas as pd
 import os
 import re
 from pathlib import Path
-from source.paden import pad_tmp, pad_vdps, pad_file_in
+
+import csv_bouwen.functies as deft
+import source.defenities_fib as samenvoegen
+from source.paden_naar_files import pad_tmp, pad_vdps, pad_file_in, list_of_files_to_clean, cleaner
 
 pad = Path("/Users/mike/PycharmProjects/TC_mjth_2019/")  # this  should be wd path and then one up
 # padtmp = "/Users/mike/PycharmProjects/TC_mjth_2019/file_out/tmp"
@@ -17,10 +20,10 @@ paden = [pad_tmp, pad_vdps]
 for pad_opruim in paden:
     deft.cleaner(pad_opruim)
 
-name_file_in = "202009810 15 18 20_inschiet.csv"  # input("csv file: ")
-ordernummer = "202009810 15 18 20_inschiet"  # input("ordernumber: ")
-aantal_banen = aantal_per_lijst = int(input("aantal_banen: >"))  # if else struktuur
-mes = 10
+name_file_in = "202014342_proef.csv"  # input("csv file: ")
+ordernummer = "202014342"  # input("ordernumber: ")
+aantal_banen = aantal_per_lijst = int(input("aantal_banen / aantal per lijst: >"))  # if else struktuur
+mes = 4
 aantal_vdp = 1
 mes_controle = mes * aantal_vdp
 
@@ -37,8 +40,8 @@ print(f'aantal rollen= {row}')
 print(f'totaal van lijst is {totaal} en het gemiddelde over {aantal_banen} banen is {opb}')
 print(f'kleinste rol {min_waarde}')
 
-deft.splitter(file_in, aantal_banen, -1500)
 
+deft.splitter(file_in, aantal_banen, -250)
 split_csv = [x for x in os.listdir(pad_tmp) if x.endswith(".csv")]
 print(f'split_csv {split_csv}')
 
@@ -132,3 +135,8 @@ print(len(combinatie_binnen_mes) * mes)
 
 if mes == 10:
     print("gekozen mes == 10")
+
+# ultimate cleaner
+
+for schoon_pad in list_of_files_to_clean:
+    cleaner(schoon_pad)
