@@ -3,7 +3,7 @@ from pathlib import Path
 import PySimpleGUI as sg
 
 from source.paden_naar_files import cleaner, list_of_files_to_clean, pad_tmp
-import source.defenities_fib as csv_builder
+import source.defenitions_fib as csv_builder
 
 '''
     Example of GUI
@@ -89,7 +89,7 @@ while True:
             name_file_in = values['Browse']
             afwijkings_waarde = int(values['afwijkings_waarde'])
 
-            overlevering_pct = int(values['overlevering_pct'])
+            overlevering_pct = float(values['overlevering_pct'])
             extra_etiketten = int(values['ee'])
             wikkel = int(values['wikkel'])
 
@@ -111,6 +111,9 @@ while True:
 
             row = aantal_rollen = len(file_in)
             opb = ongeveer_per_baan = (totaal // aantal_banen)
+            combinaties = aantal_rollen // mes
+
+            print(f'mes = {mes}')
             print(f'aantal rollen= {row}')
             print(f'totaal van lijst is {totaal} en het gemiddelde over {aantal_banen} banen is {opb}')
             print(f'kleinste rol {min_waarde}, de afwijking van het gemiddelde is {afwijkings_waarde}')
@@ -136,6 +139,11 @@ while True:
             map_tmp = sorted(Path(pad_tmp).glob('*.csv'))
             maplengte = len(map_tmp)
             csv_builder.check_map_op_mes(mes, maplengte,name_file_in,aantal_banen,afwijkings_waarde)
+
+            print(csv_builder.lijstmaker_uit_posixpad_csv(pad_tmp))
+            print(map_tmp)
+
+            print(csv_builder.lijst_opbreker(map_tmp, mes, 1))
 
             # laatste regel lost alles op in zoutzuur:)
             for schoon_pad in list_of_files_to_clean:

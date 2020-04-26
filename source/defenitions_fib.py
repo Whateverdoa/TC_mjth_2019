@@ -47,6 +47,8 @@ def splitter(file_in,
 
         continue
 
+    return print(begin_eind_lijst), print(be_LIJST)
+
 def check_map_op_mes(
     mes_controle, maplengte, min_waarde_rol, file_in, aantal_banen, afwijkings_waarde=0
 ):
@@ -67,12 +69,12 @@ def check_map_op_mes(
         print(afwijkings_waarde, maplengte)
 
 
-def print_trespa_rolls(colorcode, beeld, aantal, filenaam_uit):
+def print_trespa_rolls(colorcode, beeld, aantal, filenaam_uit, ee = 10):
     """
     Take line from list and build csv for that line
     """
     oap = overaantalpercentage = 1  # 1.02 = 2% overlevering
-    ee = 4  # = etiketten overlevering handmatig
+    # ee = 4  # = etiketten overlevering handmatig
 
     with open(filenaam_uit, "a", encoding="utf-8") as fn:
         # open a file to append the strings too
