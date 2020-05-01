@@ -752,29 +752,7 @@ def stapel_df_baan(naam,lijstin, ordernummer, map_uit):
     pd.concat(stapel_df, axis=0).to_csv(f"{map_uit}/{naam}_{ordernummer}.csv", ",")
     return pd.DataFrame(stapel_df)
 
-def kolom_naam_gever_num_pdf_omschrijving(mes=1):
-    """supplies a specific string  met de oplopende kolom namen num_1, pdf_1, omschrijving_1 etc"""
 
-    def list_to_string(functie):
-        kolom_namen = ""
-        for kolomnamen in functie:
-            kolom_namen += kolomnamen + ","
-        return kolom_namen[:-1] + "\n"
-
-    kollomnaamlijst = []
-
-    for count in range(1, mes + 1):
-        # 5 = len (list) of mes
-        num = f"num_{count}"
-        omschrijving = f"omschrijving_{count}"
-        pdf = f"pdf_{count}"
-        kollomnaamlijst.append(num)
-        kollomnaamlijst.append(pdf)
-        kollomnaamlijst.append(omschrijving)
-
-    namen = list_to_string(kollomnaamlijst)
-
-    return namen
 
 
 

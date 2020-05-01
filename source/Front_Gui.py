@@ -3,7 +3,7 @@ from pathlib import Path
 import PySimpleGUI as sg
 
 from source.paden_naar_files import cleaner, list_of_files_to_clean, pad_tmp
-import source.defenitions_fib as csv_builder
+import source.definitions_fib as csv_builder
 
 '''
     Example of GUI
@@ -138,7 +138,8 @@ while True:
 
             map_tmp = sorted(Path(pad_tmp).glob('*.csv'))
             maplengte = len(map_tmp)
-            csv_builder.check_map_op_mes(mes, maplengte,name_file_in,aantal_banen,afwijkings_waarde)
+
+            csv_builder.check_map_op_mes(mes, maplengte, name_file_in, aantal_banen, afwijkings_waarde)
 
             print(csv_builder.lijstmaker_uit_posixpad_csv(pad_tmp))
             print(map_tmp)

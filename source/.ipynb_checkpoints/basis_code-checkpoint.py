@@ -1,6 +1,6 @@
 """ alleen de code"""
 
-import defenities as deft
+import definitions as deft
 import pandas as pd
 import os
 import re

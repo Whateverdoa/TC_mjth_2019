@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 import csv_bouwen.functies as deft
-import source.defenitions_fib as samenvoegen
+import source.definitions_fib as samenvoegen
 from source.paden_naar_files import pad_tmp, pad_vdps, pad_file_in, list_of_files_to_clean, cleaner
 
 pad = Path("/Users/mike/PycharmProjects/TC_mjth_2019/")  # this  should be wd path and then one up

@@ -77,6 +77,7 @@ def read_out_3(lissst, ordernum):
 
         file_3 = pd.read_csv(f"vdps/{c}", ";")
 
+        from turtle import pd
         samengevoeg_3 = pd.concat([file_1, file_2, file_3], axis=1)
 
         samengevoeg_3.columns = ["omschrijving_1", "pdf_1", "omschrijving_2", "pdf_2", "omschrijving_3", "pdf_3"]
@@ -132,8 +133,7 @@ def read_out_6(lissst, ordernum):
         file_5 = pd.read_csv(f"vdps/{e}", ";")
         file_6 = pd.read_csv(f"vdps/{f}", ";")
 
-
-
+        from turtle import pd
         samengevoeg_6 = pd.concat([file_1, file_2, file_3, file_4, file_5, file_6], axis=1)
 
         samengevoeg_6.columns = ["omschrijving_1", "pdf_1", "omschrijving_2", "pdf_2", "omschrijving_3", "pdf_3", "omschrijving_4", "pdf_4", "omschrijving_5", "pdf_5", "omschrijving_6", "pdf_6"]
