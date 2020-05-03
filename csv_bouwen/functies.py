@@ -12,19 +12,20 @@ def check_map_op_mes(
     mes_controle, maplengte, min_waarde_rol, file_in, aantal_banen, afwijkings_waarde=0
 ):
     # for loop of while true loop
+
     if mes_controle == maplengte:
         print("ok")
         print(afwijkings_waarde)
 
     elif mes_controle < maplengte:
-        print("te veel")
+        print("te weinig")
         afwijkings_waarde += min_waarde_rol
         print(afwijkings_waarde)
         # mappen opschonen
         # nieuwe waardes toepassen in splitter()
 
     elif mes_controle > maplengte:
-        print("te weinig")
+        print("te veel")
         afwijkings_waarde -= min_waarde_rol
         print(afwijkings_waarde)
         # mappen opschonen
